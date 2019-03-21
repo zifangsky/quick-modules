@@ -41,6 +41,6 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<SysLog> findAll(Long roleId, String queryParam, Holder<PageInfo> pageInfoHolder) {
-        return logMapper.findAll(roleId, queryParam.replace("%", ""), pageInfoHolder);
+        return logMapper.findAll(roleId, queryParam, pageInfoHolder);
     }
 }

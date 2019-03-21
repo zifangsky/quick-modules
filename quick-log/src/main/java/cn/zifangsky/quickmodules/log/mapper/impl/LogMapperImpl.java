@@ -74,6 +74,11 @@ public class LogMapperImpl implements LogMapper {
     @Override
     public List<SysLog> findAll(Long roleId, String queryParam, Holder<PageInfo> pageInfoHolder) {
         List<Object> valuesList = new ArrayList<>();
+        if(queryParam != null){
+            queryParam = queryParam.replace("%", "");
+        }else{
+            queryParam = "";
+        }
 
         String querySql;
 
