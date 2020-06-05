@@ -49,7 +49,7 @@
         <!-- Apache Commons DbUtils -->
         <commons-dbutils>1.7</commons-dbutils>
         <!-- Spring Web MVC -->
-        <spring>5.1.5.RELEASE</spring>
+        <spring>5.2.6.RELEASE</spring>
     </properties>
 
     <dependencies>
