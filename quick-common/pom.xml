@@ -35,7 +35,7 @@
         <!-- Apache HttpClient -->
         <httpclient>4.5.7</httpclient>
         <!-- Fastjson -->
-        <fastjson>1.2.56</fastjson>
+        <fastjson>1.2.70</fastjson>
         <!-- Jackson -->
         <jackson>2.9.8</jackson>
         <!-- SLF4J -->
