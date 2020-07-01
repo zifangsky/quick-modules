@@ -43,7 +43,7 @@
         <!-- Java Servlet API -->
         <javax.servlet-api>4.0.1</javax.servlet-api>
         <!-- MySQL Connector -->
-        <mysql>5.1.47</mysql>
+        <mysql>8.0.16</mysql>
         <!-- Druid -->
         <druid>1.1.12</druid>
         <!-- Apache Commons DbUtils -->
