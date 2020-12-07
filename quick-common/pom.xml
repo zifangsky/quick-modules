@@ -5,13 +5,13 @@
     <parent>
         <artifactId>quick-modules</artifactId>
         <groupId>cn.zifangsky.quickmodules</groupId>
-        <version>1.0.0-RELEASE</version>
+        <version>1.1.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quick-common</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-RELEASE</version>
+    <version>1.1.0-RELEASE</version>
 
     <name>quick-common</name>
     <description>主要包含整个模块的公共部分</description>
@@ -24,35 +24,40 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <!-- Lombok -->
+        <lombok>1.18.16</lombok>
         <!-- JUnit单元测试 -->
         <junit>4.12</junit>
         <!-- Apache Commons系列公共库 -->
-        <commons-lang3>3.8.1</commons-lang3>
-        <commons-io>2.6</commons-io>
-        <commons-codec>1.12</commons-codec>
-        <commons-text>1.6</commons-text>
-        <commons-beanutils>1.9.3</commons-beanutils>
+        <commons-lang3>3.11</commons-lang3>
+        <commons-io>2.8.0</commons-io>
+        <commons-beanutils>1.9.4</commons-beanutils>
+        <commons-codec>1.15</commons-codec>
+        <commons-text>1.9</commons-text>
         <!-- Apache HttpClient -->
-        <httpclient>4.5.7</httpclient>
-        <!-- Fastjson -->
-        <fastjson>1.2.70</fastjson>
+        <httpclient>4.5.13</httpclient>
         <!-- Jackson -->
-        <jackson>2.9.8</jackson>
+        <jackson>2.12.0</jackson>
         <!-- SLF4J -->
-        <slf4j>1.7.26</slf4j>
+        <slf4j>1.7.30</slf4j>
         <!-- Java Servlet API -->
         <javax.servlet-api>4.0.1</javax.servlet-api>
         <!-- MySQL Connector -->
-        <mysql>5.1.47</mysql>
-        <!-- Druid -->
-        <druid>1.1.12</druid>
+        <mysql>5.1.49</mysql>
         <!-- Apache Commons DbUtils -->
         <commons-dbutils>1.7</commons-dbutils>
         <!-- Spring Web MVC -->
-        <spring>5.2.6.RELEASE</spring>
+        <spring>5.2.11.RELEASE</spring>
     </properties>
 
     <dependencies>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+            <optional>true</optional>
+        </dependency>
         <!-- Junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -88,21 +93,12 @@
             <version>${commons-beanutils}</version>
         </dependency>
 
-
         <!-- Apache HttpClient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${httpclient}</version>
         </dependency>
-
-        <!-- Fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson}</version>
-        </dependency>
-
         <!-- Jackson对自动解析JSON和XML格式的支持 -->
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
@@ -135,12 +131,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql}</version>
-        </dependency>
-        <!-- Druid -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>${druid}</version>
         </dependency>
         <!-- Apache Commons DbUtils -->
         <dependency>

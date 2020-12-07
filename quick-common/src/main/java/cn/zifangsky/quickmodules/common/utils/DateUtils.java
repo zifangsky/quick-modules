@@ -1,11 +1,8 @@
 package cn.zifangsky.quickmodules.common.utils;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
@@ -14,8 +11,8 @@ import java.util.Locale;
  * Date相关公共方法
  *
  * @author zifangsky
- * @date 2017/7/27
- * @since 1.0.0
+ * @date 2020/12/7
+ * @since 1.1.0
  */
 public class DateUtils {
     private static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -405,6 +402,63 @@ public class DateUtils {
     }
 
     /**
+     * 将字符串时间转化为Date
+     * @author zifangsky
+     * @date 2018/7/30 13:23
+     * @since 1.0.0
+     * @return java.util.Date
+     */
+    public static Date toDate(String dateStr){
+        try {
+            DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
+            return dateFormat.parse(dateStr);
+        }catch (Exception e){
+            //ignore
+        }
+        return null;
+    }
+
+    /**
+     * 将字符串时间转化为Date
+     * @author zifangsky
+     * @date 2018/7/30 13:23
+     * @since 1.0.0
+     * @return java.util.Date
+     */
+    public static Date toDate(String dateStr, String pattern){
+        try {
+            DateFormat dateFormat = new SimpleDateFormat(pattern);
+            return dateFormat.parse(dateStr);
+        }catch (Exception e){
+            //ignore
+        }
+        return null;
+    }
+
+    /**
+     * 将字符串时间转化为Date
+     * @author zifangsky
+     * @date 2018/7/30 13:23
+     * @since 1.0.0
+     * @return java.util.Date
+     */
+    public static Date toDate(String dateStr, String... patterns){
+        if(patterns == null || patterns.length < 1){
+            return null;
+        }
+
+        for(String pattern : patterns){
+            Date date = toDate(dateStr, pattern);
+
+            if(date != null){
+                return date;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * 返回几天之前的时间
      * @author zifangsky
      * @date 2017/7/30 13:48
@@ -489,5 +543,4 @@ public class DateUtils {
     public static Long getSecondOfDays(Long days){
         return days * 86400;
     }
-
 }

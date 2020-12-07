@@ -1,5 +1,6 @@
 package cn.zifangsky.quickmodules.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,6 +9,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -17,9 +19,10 @@ import java.text.MessageFormat;
  * AES加解密
  *
  * @author zifangsky
- * @date 2017/8/14
- * @since 1.0.0
+ * @date 2020/12/7
+ * @since 1.1.0
  */
+@Slf4j
 public class AesUtils {
     /**
      * AES加解密
@@ -44,6 +47,18 @@ public class AesUtils {
     private static final String TRANSFORM_ECB_PKCS5 = "AES/ECB/PKCS5Padding";
 
     /**
+     * 基于CBC工作模式的AES加密（使用默认秘钥和初始化向量值）
+     * @author zifangsky
+     * @date 2018/8/14 11:42
+     * @since 1.0.0
+     * @param value 待加密字符串
+     * @return java.lang.String
+     */
+    public static String encryptCbcMode(final String value){
+        return encryptCbcMode(value, KEY_DEFAULT, IV_DEFAULT);
+    }
+
+    /**
      * 基于CBC工作模式的AES加密
      * @author zifangsky
      * @date 2017/8/14 11:42
@@ -64,7 +79,6 @@ public class AesUtils {
             }
 
             //密码
-//            final SecretKeySpec keySpec = new SecretKeySpec(getUTF8Bytes(key),"AES");
             final SecretKeySpec keySpec = getSecretKey(key);
 
             //初始化向量器
@@ -80,12 +94,23 @@ public class AesUtils {
                 //然后转成BASE64返回
                 return Base64.encodeBase64String(encrypted);
             } catch (Exception e) {
-                System.out.println(MessageFormat.format("基于CBC工作模式的AES加密失败,VALUE:{0},KEY:{1}",value,key));
-                e.printStackTrace();
+                log.error(MessageFormat.format("基于CBC工作模式的AES加密失败,VALUE:{0},KEY:{1}",value,key), e);
             }
         }
 
         return null;
+    }
+
+    /**
+     * 基于CBC工作模式的AES解密（使用默认秘钥和初始化向量值）
+     * @author zifangsky
+     * @date 2018/8/14 11:42
+     * @since 1.0.0
+     * @param encryptedStr AES加密之后的字符串
+     * @return java.lang.String
+     */
+    public static String decryptCbcMode(final String encryptedStr){
+        return decryptCbcMode(encryptedStr, KEY_DEFAULT, IV_DEFAULT);
     }
 
     /**
@@ -109,9 +134,8 @@ public class AesUtils {
             }
 
             //密码
-//            final SecretKeySpec keySpec = new SecretKeySpec(getUTF8Bytes(key),"AES");
             final SecretKeySpec keySpec = getSecretKey(key);
-//            初始化向量器
+            //初始化向量器
             final IvParameterSpec ivParameterSpec = new IvParameterSpec(getUTF8Bytes(iv));
 
             try {
@@ -124,16 +148,26 @@ public class AesUtils {
                 //然后再AES解密
                 byte[] originalBytes = encipher.doFinal(encryptedBytes);
                 //返回字符串
-                return new String(originalBytes);
+                return new String(originalBytes, Charset.forName("UTF-8"));
             } catch (Exception e) {
-                System.out.println(MessageFormat.format("基于CBC工作模式的AES解密失败,encryptedStr:{0},KEY:{1}",encryptedStr,key));
-                e.printStackTrace();
+                log.error(MessageFormat.format("基于CBC工作模式的AES解密失败,encryptedStr:{0},KEY:{1}",encryptedStr,key), e);
             }
         }
 
         return null;
     }
 
+    /**
+     * 基于ECB工作模式的AES加密（使用默认秘钥）
+     * @author zifangsky
+     * @date 2018/8/14 11:42
+     * @since 1.0.0
+     * @param value 待加密字符串
+     * @return java.lang.String
+     */
+    public static String encryptEcbMode(final String value){
+        return encryptEcbMode(value, KEY_DEFAULT);
+    }
 
     /**
      * 基于ECB工作模式的AES加密
@@ -164,12 +198,23 @@ public class AesUtils {
                 //然后转成BASE64返回
                 return Base64.encodeBase64String(encrypted);
             } catch (Exception e) {
-                System.out.println(MessageFormat.format("基于ECB工作模式的AES加密失败,VALUE:{0},KEY:{1}",value,key));
-                e.printStackTrace();
+                log.error(MessageFormat.format("基于ECB工作模式的AES加密失败,VALUE:{0},KEY:{1}",value,key), e);
             }
         }
 
         return null;
+    }
+
+    /**
+     * 基于ECB工作模式的AES解密（使用默认秘钥）
+     * @author zifangsky
+     * @date 2018/8/14 11:42
+     * @since 1.0.0
+     * @param encryptedStr AES加密之后的字符串
+     * @return java.lang.String
+     */
+    public static String decryptEcbMode(final String encryptedStr){
+        return decryptEcbMode(encryptedStr, KEY_DEFAULT);
     }
 
     /**
@@ -201,10 +246,9 @@ public class AesUtils {
                 //然后再AES解密
                 byte[] originalBytes = encipher.doFinal(encryptedBytes);
                 //返回字符串
-                return new String(originalBytes);
+                return new String(originalBytes, Charset.forName("UTF-8"));
             } catch (Exception e) {
-                System.out.println(MessageFormat.format("基于ECB工作模式的AES解密失败,encryptedStr:{0},KEY:{1}",encryptedStr,key));
-                e.printStackTrace();
+                log.error(MessageFormat.format("基于ECB工作模式的AES解密失败,encryptedStr:{0},KEY:{1}",encryptedStr,key), e);
             }
         }
 
@@ -243,8 +287,7 @@ public class AesUtils {
             //转换为AES专用密钥
             return new SecretKeySpec(secretKey.getEncoded(), ALGORITHM);
         } catch (NoSuchAlgorithmException ex) {
-            System.out.println(MessageFormat.format("生成加密秘钥失败,KEY:{0}",KEY));
-            ex.printStackTrace();
+            log.error(MessageFormat.format("生成加密秘钥失败,KEY:{0}",KEY), ex);
         }
 
         return null;
