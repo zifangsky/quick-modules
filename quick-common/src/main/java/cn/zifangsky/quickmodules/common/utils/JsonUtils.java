@@ -1,54 +1,58 @@
 package cn.zifangsky.quickmodules.common.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * JSON相关公共方法（通过Fastjson实现）
+ * 基于 Jackson 的工具类
  *
  * @author zifangsky
- * @date 2017/5/2
- * @since 1.0.0
+ * @date 2020/12/7
+ * @since 1.1.0
  */
+@Slf4j
 public class JsonUtils {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
-     * 将对象转化为json字符串
-     * @param source Java对象
-     * @return java.lang.String
+     * 将对象转换成json字符串
      */
-    public static <K> String toJson(K source){
-        return JSON.toJSON(source).toString();
+    public static String objectToJson(Object data) {
+        try {
+            return MAPPER.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            log.error("'将对象转换成json字符串'出现异常", e);
+        }
+        return null;
     }
 
     /**
-     * 将json字符串还原为目标对象
-     * @param source json字符串
-     * @return K
+     * 将json字符串转化为对象
      */
-    public static <T> T fromJson(String source, Class<T> clazz){
-        return JSON.parseObject(source, clazz);
+    public static <T> T jsonToPojo(String jsonData, Class<T> beanType) {
+        try {
+            return MAPPER.readValue(jsonData, beanType);
+        } catch (Exception e) {
+            log.error("'将json字符串转化为对象'出现异常", e);
+        }
+        return null;
     }
 
     /**
-     * 将数组类型的json字符串还原为目标对象
-     * @param source json字符串
-     * @return java.util.List<T>
+     * 将json字符串转换成对象list
      */
-    public static <T> List<T> fromArrayJson(String source, Class<T> clazz){
-        return JSON.parseArray(source, clazz);
-    }
-
-    /**
-     * 将数组类型的json字符串还原为较为复杂的List<Map<String, Object>>格式
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
-     */
-    public static List<Map<String, Object>> fromArrayJson(String source) {
-        return JSON.parseObject(source, new TypeReference<List<Map<String, Object>>>() {
-        });
+    public static <T> List<T> jsonToList(String jsonData, Class<T> beanType) {
+        JavaType javaType = MAPPER.getTypeFactory().constructParametricType(List.class, beanType);
+        try {
+            return MAPPER.readValue(jsonData, javaType);
+        } catch (Exception e) {
+            log.error("'将json字符串转换成对象list'出现异常", e);
+        }
+        return null;
     }
 
 }
