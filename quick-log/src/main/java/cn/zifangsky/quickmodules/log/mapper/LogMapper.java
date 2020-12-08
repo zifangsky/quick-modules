@@ -1,9 +1,9 @@
 package cn.zifangsky.quickmodules.log.mapper;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
 import cn.zifangsky.quickmodules.log.model.SysLog;
 
-import javax.xml.ws.Holder;
 import java.util.List;
 
 public interface LogMapper {

@@ -1,5 +1,6 @@
 package cn.zifangsky.quickmodules.log.service.impl;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
 import cn.zifangsky.quickmodules.log.mapper.LogMapper;
 import cn.zifangsky.quickmodules.log.model.SysLog;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Holder;
 import java.util.List;
 
 /**

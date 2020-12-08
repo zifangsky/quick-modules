@@ -5,13 +5,13 @@
     <parent>
         <artifactId>quick-modules</artifactId>
         <groupId>cn.zifangsky.quickmodules</groupId>
-        <version>1.0.0-RELEASE</version>
+        <version>1.1.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quick-log</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-RELEASE</version>
+    <version>1.1.0-RELEASE</version>
 
     <name>quick-log</name>
     <description>自定义日志输出相关模块</description>
@@ -23,13 +23,57 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!-- Lombok -->
+        <lombok>1.18.16</lombok>
+        <!-- MySQL Connector -->
+        <mysql>5.1.49</mysql>
+        <!-- HikariCP -->
+        <HikariCP>3.4.5</HikariCP>
+        <!-- Java Servlet API -->
+        <javax.servlet-api>4.0.1</javax.servlet-api>
+        <!-- Apache Commons DbUtils -->
+        <commons-dbutils>1.7</commons-dbutils>
         <!-- quick-common -->
-        <quick-common>1.0.0-RELEASE</quick-common>
+        <quick-common>1.1.0-RELEASE</quick-common>
         <!-- aspectj -->
         <aspectj>1.9.2</aspectj>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql}</version>
+        </dependency>
+        <!-- HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${HikariCP}</version>
+        </dependency>
+        <!-- Apache Commons DbUtils -->
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>${commons-dbutils}</version>
+        </dependency>
+        <!-- Java Servlet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
         <dependency>
             <groupId>cn.zifangsky.quickmodules</groupId>
             <artifactId>quick-common</artifactId>

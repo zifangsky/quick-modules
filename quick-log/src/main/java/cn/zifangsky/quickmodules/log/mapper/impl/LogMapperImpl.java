@@ -1,17 +1,17 @@
 package cn.zifangsky.quickmodules.log.mapper.impl;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
-import cn.zifangsky.quickmodules.common.plugins.DbUtilsTemplate;
 import cn.zifangsky.quickmodules.log.common.Constants;
 import cn.zifangsky.quickmodules.log.common.JDBCConstants;
 import cn.zifangsky.quickmodules.log.mapper.LogMapper;
 import cn.zifangsky.quickmodules.log.model.SysLog;
+import cn.zifangsky.quickmodules.log.plugins.DbUtilsTemplate;
 import cn.zifangsky.quickmodules.log.plugins.WebLogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import javax.xml.ws.Holder;
 import java.util.ArrayList;
 import java.util.List;
 

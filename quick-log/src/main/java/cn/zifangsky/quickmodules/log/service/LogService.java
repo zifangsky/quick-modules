@@ -1,9 +1,9 @@
 package cn.zifangsky.quickmodules.log.service;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
 import cn.zifangsky.quickmodules.log.model.SysLog;
 
-import javax.xml.ws.Holder;
 import java.util.List;
 
 /**
@@ -23,8 +23,6 @@ public interface LogService {
      */
     void addLog(SysLog log);
 
-
-
     /**
      * 分页查询
      * @author zifangsky
@@ -36,5 +34,4 @@ public interface LogService {
      * @return java.util.List<cn.zifangsky.quickmodules.log.model.SysLog>
      */
     List<SysLog> findAll(Long roleId, String queryParam, Holder<PageInfo> pageInfoHolder);
-
 }

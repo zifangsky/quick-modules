@@ -1,11 +1,14 @@
 package cn.zifangsky.quickmodules.log.model;
 
+import lombok.Data;
+
 /**
  * 用户信息
  * @author zifangsky
  * @date 2017/12/4
  * @since 1.0.0
  */
+@Data
 public class UserInfo {
     /**
      * 用户ID
@@ -18,22 +21,6 @@ public class UserInfo {
 
     public UserInfo(Long userId, String username) {
         this.userId = userId;
-        this.username = username;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
         this.username = username;
     }
 

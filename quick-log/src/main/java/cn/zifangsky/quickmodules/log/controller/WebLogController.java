@@ -1,5 +1,6 @@
 package cn.zifangsky.quickmodules.log.controller;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
 import cn.zifangsky.quickmodules.common.enums.SortOrderTypes;
 import cn.zifangsky.quickmodules.log.model.SysLog;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.Holder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

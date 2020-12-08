@@ -1,7 +1,7 @@
 package cn.zifangsky.quickmodules.log.config;
 
 import cn.zifangsky.quickmodules.common.annotations.ConditionalOnBeanUndefined;
-import cn.zifangsky.quickmodules.common.plugins.DbUtilsTemplate;
+import cn.zifangsky.quickmodules.log.plugins.DbUtilsTemplate;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.GenerousBeanProcessor;
