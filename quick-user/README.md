@@ -1,6 +1,6 @@
 ## 模块介绍 ##
 
-此模块是基于`Apache Shiro`框架封装的权限控制模块，包括`Apache Shiro`相关的所有功能以及用户、角色、资源等基础增删改查的`RESTful API`。
+此模块是基于 [easylimit](https://github.com/zifangsky/easylimit) 框架封装的权限控制模块，包括`easylimit`相关的所有功能以及用户、角色、资源等基础增删改查的`RESTful API`。
 
 
 
@@ -8,11 +8,11 @@
 
 #### （1）引入依赖： ####
 
-```json
+```xml
 <dependency>
 	<groupId>cn.zifangsky.quickmodules</groupId>
 	<artifactId>quick-user</artifactId>
-	<version>${quick-user}</version>
+	<version>1.1.0-RELEASE</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ CREATE TABLE `sys_function` (
   `description` varchar(255) DEFAULT NULL COMMENT '资源项描述',
   `institution_id` varchar(50) DEFAULT NULL COMMENT '公司id',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `creater` varchar(255) DEFAULT NULL COMMENT '创建人',
+  `creator` varchar(255) DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`),
   UNIQUE KEY `myself_id` (`myself_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='资源/权限表';
@@ -60,7 +60,7 @@ CREATE TABLE `sys_role` (
   `description` varchar(500) DEFAULT NULL COMMENT '描述',
   `status` int(4) DEFAULT '0' COMMENT '状态（0:正常；1：删除）',
   `institution_id` int(11) DEFAULT NULL COMMENT '公司id',
-  `creater` varchar(255) DEFAULT NULL COMMENT '创建人',
+  `creator` varchar(255) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色表';
@@ -107,7 +107,7 @@ CREATE TABLE `sys_user` (
   `is_del` tinyint(1) DEFAULT '0' COMMENT '删除状态：0正常；1删除',
   `login_ip` varchar(100) DEFAULT NULL,
   `login_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '上次登录时间',
-  `creater` varchar(255) DEFAULT NULL COMMENT '创建人',
+  `creator` varchar(255) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
@@ -142,49 +142,94 @@ INSERT INTO `sys_user_role` VALUES ('2', '2', '2');
 ```java
 package cn.zifangsky.quickmodules.example.config;
 
-import cn.zifangsky.quickmodules.common.enums.EncryptionTypes;
+import cn.zifangsky.easylimit.enums.EncryptionTypeEnums;
+import cn.zifangsky.easylimit.filter.impl.support.DefaultFilterEnums;
 import cn.zifangsky.quickmodules.user.annotations.EnableWebUser;
+import cn.zifangsky.quickmodules.user.plugins.WebTokenUserInfo;
 import cn.zifangsky.quickmodules.user.plugins.WebUserInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 测试使用quick-user模块
  * @author zifangsky
- * @date 2017/11/2
- * @since 1.0.0
+ * @date 2020/12/7
+ * @since 1.1.0
  */
 @Configuration
 @EnableWebUser
 public class QuickUserModuleConfig {
+
+    /**
+     * 前后端分离开发模式
+     */
     @Bean
-    public WebUserInfo webUserInfo(){
-        Map<String, String> filterChainTypesMap = new LinkedHashMap<>();
-        filterChainTypesMap.put("/css/**", FilterChainTypes.Anon.getCode());
-        filterChainTypesMap.put("/layui/**", FilterChainTypes.Anon.getCode());
-        filterChainTypesMap.put("/**", (FilterChainTypes.Kickout.getCode() + "," +FilterChainTypes.Authc.getCode()));
+    public WebTokenUserInfo webTokenUserInfo(){
+        //添加指定路径的权限校验
+        LinkedHashMap<String, String[]> patternPathFilterMap = this.patternPathFilterMap();
 
-        WebUserInfo.Builder builder = new WebUserInfo.Builder();
-
-        return builder.encryptionType(EncryptionTypes.Sha256Crypt)
+        WebTokenUserInfo userInfo = (WebTokenUserInfo) new WebTokenUserInfo()
+                .encryptionType(EncryptionTypeEnums.Sha256Crypt)
                 .loginCheckUrl("/check")
                 .unauthorizedUrl("/error/403.html")
                 .logoutUrl("/logout")
                 //启用登录校验验证码
-                .enableLoginVerifyCode(true)
+                .enableLoginVerifyCode(false)
                 //同一个用户只允许在一个设备登录
-                .deleteOldSession(true)
-                //前后端分离模式
-//                .separationArchitecture(true)
-                .filterChainMap(filterChainTypesMap)
-                //开启Shiro注解需要的AOP切面表达式
-                .aopExpression("execution(* cn.zifangsky..controller..*.*(..))")
+                .kickOutOldSessions(true)
+                //开启权限注解匹配的切面表达式
+                .aopExpression("execution(* cn.zifangsky..controller..*.*(..))");
+
+        return userInfo
+                .filter()
+                .filterChainMap(patternPathFilterMap)
                 .build();
     }
 
+    /**
+     * 传统MVC开发模式
+     */
+//    @Bean
+    public WebUserInfo webUserInfo(){
+        //添加指定路径的权限校验
+        LinkedHashMap<String, String[]> patternPathFilterMap = this.patternPathFilterMap();
+
+        WebUserInfo userInfo = new WebUserInfo()
+                .encryptionType(EncryptionTypeEnums.Sha256Crypt)
+                .loginCheckUrl("/check")
+                .unauthorizedUrl("/error/403.html")
+                .logoutUrl("/logout")
+                //启用登录校验验证码
+                .enableLoginVerifyCode(false)
+                //同一个用户只允许在一个设备登录
+                .kickOutOldSessions(true)
+                //开启权限注解匹配的切面表达式
+                .aopExpression("execution(* cn.zifangsky..controller..*.*(..))");
+
+        return userInfo
+                .filter()
+                .filterChainMap(patternPathFilterMap)
+                .build();
+    }
+
+
+    /**
+     * 请求路径与需要的访问权限
+     */
+    private LinkedHashMap<String, String[]> patternPathFilterMap(){
+        LinkedHashMap<String, String[]> patternPathFilterMap = new LinkedHashMap<>();
+        patternPathFilterMap.put("/css/**", new String[]{DefaultFilterEnums.ANONYMOUS.getFilterName()});
+        patternPathFilterMap.put("/layui/**", new String[]{DefaultFilterEnums.ANONYMOUS.getFilterName()});
+        patternPathFilterMap.put("/test/greeting", new String[]{DefaultFilterEnums.ANONYMOUS.getFilterName()});
+//        patternPathFilterMap.put("/test/selectByUsername", new String[]{"perms[/aaa/bbb]"});
+
+        //其他路径需要登录才能访问
+        patternPathFilterMap.put("/**", new String[]{DefaultFilterEnums.LOGIN.getFilterName()});
+
+        return patternPathFilterMap;
+    }
 }
 ```
 
@@ -229,12 +274,12 @@ public class QuickUserModuleConfig {
 
 用于自定义组件的`PluginManager`的逻辑，目前包含以下几个方法：
 
-- checkUserPassword：用户校验“用户名+密码”模式的真正逻辑
-- sendLoginPhoneVerifyCode：发送登录时的短信验证码（使用的时候需要自行实现）
-- sendRegisterPhoneVerifyCode：发送注册时的短信验证码（使用的时候需要自行实现）
-- checkPhoneVerifyCode：校验指定手机号的验证码（使用的时候需要自行实现）
-- generateAuthImage：生成图片验证码的逻辑
-- checkVerifyCode：校验图片验证码的逻辑
+- `checkCustomUsernamePasswordValidatedInfo`：“用户名+密码”模式，校验自定义的密码加密方式（使用的时候需要自行实现）
+- `sendLoginPhoneVerifyCode`：发送登录时的短信验证码（使用的时候需要自行实现）
+- `sendRegisterPhoneVerifyCode`：发送注册时的短信验证码（使用的时候需要自行实现）
+- `checkPhoneVerifyCode`：校验指定手机号的验证码（使用的时候需要自行实现）
+- `generateAuthImage`：生成图片验证码的逻辑
+- `checkVerifyCode`：校验图片验证码的逻辑
 
 
 
@@ -250,7 +295,7 @@ public class QuickUserModuleConfig {
 
 
 
-#### （7）deleteOldSession： ####
+#### （7）kickOutOldSessions： ####
 
 用于设置是否允许同一个用户同时在多个设备登录，默认为`false`。**如果设置为`true`，那么某个用户在新设备登录时，其在旧设备的登录状态将会被踢出，而且会根据当前不同请求方式返回不同的提示信息**，具体如下：
 
@@ -280,26 +325,19 @@ ii）如果是其他请求方式，则返回提示：
 
 
 
-#### （8）separationArchitecture： ####
+#### （8）aopExpression： ####
 
-用于设置当前使用这个组件的项目是否是前后端分离架构，默认为`false`。如果设置为`true`，那么在用户没有登录时将会返回`JSON`提示信息，而不是重定向到登录页面。具体返回的提示信息如下：
-
-```json
-{ 
-    "code": 401,
-    "msg": "您还未登录系统，无法访问该地址！"
-}
-```
+此方法用于设置开启`Shiro`的AOP注解需要的表达式，比如：`execution(* cn.zifangsky..controller..*.*(..))`。
 
 
 
-#### （9）setVerifyImageWidth： ####
+#### （9）verifyImageWidth： ####
 
 用于设置图片验证码的宽度，默认为`140`。
 
 
 
-#### （10）setVerifyImageHeight： ####
+#### （10）verifyImageHeight： ####
 
 用于设置图片验证码的高度，默认为`40`。
 
@@ -341,28 +379,28 @@ ii）如果是其他请求方式，则返回提示：
 
 
 
-#### （16）aopExpression： ####
-
-此方法用于设置开启`Shiro`的AOP注解需要的表达式，比如：`execution(* cn.zifangsky..controller..*.*(..))`。
-
-
-
 #### （17）filterChainMap： ####
 
-用于添加基于`Shiro`的URL过滤集合，需要传递的参数是一个`LinkedHashMap`，比如：
+用于添加基于`easylimit`的URL过滤集合，需要传递的参数是一个`LinkedHashMap`，比如：
 
 ```java
-Map<String, String> filterChainTypesMap = new LinkedHashMap<>();
-filterChainTypesMap.put("/css/**", FilterChainTypes.Anon.getCode());
-filterChainTypesMap.put("/layui/**", FilterChainTypes.Anon.getCode());
-filterChainTypesMap.put("/**", (FilterChainTypes.Kickout.getCode() + "," +FilterChainTypes.Authc.getCode()));
+LinkedHashMap<String, String[]> patternPathFilterMap = new LinkedHashMap<>();
+patternPathFilterMap.put("/css/**", new String[]{DefaultFilterEnums.ANONYMOUS.getFilterName()});
+patternPathFilterMap.put("/layui/**", new String[]{DefaultFilterEnums.ANONYMOUS.getFilterName()});
+patternPathFilterMap.put("/test/greeting", new String[]{DefaultFilterEnums.ANONYMOUS.getFilterName()});
+//patternPathFilterMap.put("/test/selectByUsername", new String[]{"perms[/aaa/bbb]"});
+
+//其他路径需要登录才能访问
+patternPathFilterMap.put("/**", new String[]{DefaultFilterEnums.LOGIN.getFilterName()});
 ```
 
-其中这里的`FilterChainTypes`内置了三种最常用的过滤类型：
+其中这里的`DefaultFilterEnums`内置了五种最常用的过滤类型：
 
-- Anon：不用登录即可随意访问，一般用于设置静态资源不用登录就可以访问。**需要注意的是，这类URL需要在最前面设置**。
-- Authc：设置哪些URL需要登录后才允许访问。
-- Kickout：设置哪些URL会校验是否在异地登录。**需要注意的是，这个过滤器一般和`Authc`过滤器一起使用，而且只有当前面的`deleteOldSession`参数设置为true时才会生效**。
+- `ANONYMOUS`：不用登录即可随意访问，一般用于设置静态资源不用登录就可以访问。**需要注意的是，这类URL需要在最前面设置**。
+- `LOGIN`：设置哪些URL需要登录后才允许访问。
+- `LOGOUT`：注销的URL
+- `ROLES`：设置某个URL需要何种角色才能访问，比如：roles[admin]
+- `PERMS`：设置某个URL需要何种权限才能访问，比如：perms[/aaa/bbb]
 
 
 
