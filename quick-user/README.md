@@ -144,7 +144,6 @@ package cn.zifangsky.quickmodules.example.config;
 
 import cn.zifangsky.quickmodules.common.enums.EncryptionTypes;
 import cn.zifangsky.quickmodules.user.annotations.EnableWebUser;
-import cn.zifangsky.quickmodules.user.enums.FilterChainTypes;
 import cn.zifangsky.quickmodules.user.plugins.WebUserInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,20 +1,20 @@
 package cn.zifangsky.quickmodules.user.mapper.impl;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
+import cn.zifangsky.quickmodules.common.common.JDBCConstants;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
-import cn.zifangsky.quickmodules.common.plugins.DbUtilsTemplate;
 import cn.zifangsky.quickmodules.user.common.Constants;
-import cn.zifangsky.quickmodules.user.common.JDBCConstants;
 import cn.zifangsky.quickmodules.user.mapper.FunctionMapper;
 import cn.zifangsky.quickmodules.user.mapper.RoleMapper;
 import cn.zifangsky.quickmodules.user.model.SysFunction;
 import cn.zifangsky.quickmodules.user.model.SysRole;
 import cn.zifangsky.quickmodules.user.model.SysRoleFunction;
 import cn.zifangsky.quickmodules.user.model.SysUserRole;
+import cn.zifangsky.quickmodules.user.plugins.DbUtilsTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import javax.xml.ws.Holder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

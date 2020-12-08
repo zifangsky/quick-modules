@@ -1,9 +1,8 @@
 package cn.zifangsky.quickmodules.user.config;
 
-import cn.zifangsky.quickmodules.common.annotations.ConditionalOnBeanUndefined;
-import cn.zifangsky.quickmodules.common.plugins.DbUtilsTemplate;
 import cn.zifangsky.quickmodules.user.controller.WebLoginController;
 import cn.zifangsky.quickmodules.user.controller.WebUserController;
+import cn.zifangsky.quickmodules.user.plugins.DbUtilsTemplate;
 import cn.zifangsky.quickmodules.user.plugins.PropertySourcedRequestMappingHandlerMapping;
 import cn.zifangsky.quickmodules.user.plugins.WebUserInfo;
 import cn.zifangsky.quickmodules.user.service.UserService;
@@ -26,8 +25,8 @@ import javax.sql.DataSource;
  * @since 1.0.0
  */
 @Configuration
-@Import({CacheConfig.class, ShiroConfig.class})
-@ComponentScan(basePackages= {"cn.zifangsky.quickmodules.user"})
+@Import({EasyLimitConfig.class})
+@ComponentScan(basePackages= {"cn.zifangsky.quickmodules.user", "cn.zifangsky.quickmodules.common"})
 public class WebUserConfig {
 
     /**
@@ -38,7 +37,6 @@ public class WebUserConfig {
      * @return org.apache.commons.dbutils.RowProcessor
      */
     @Bean
-    @ConditionalOnBeanUndefined(RowProcessor.class)
     public RowProcessor rowProcessor(){
         BeanProcessor beanProcessor = new GenerousBeanProcessor();
         return new BasicRowProcessor(beanProcessor);

@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 public enum ExpireTypes {
     //默认短信验证码的有效期为1分钟
     DEFAULT_PHONE_CODE(60L, TimeUnit.SECONDS),
-    //Shiro的session的全局过期时间（2小时）
-    SHIRO_SESSION(7200000L, TimeUnit.MILLISECONDS)
+    //用户会话的全局过期时间（2小时）
+    USER_SESSION(7200000L, TimeUnit.MILLISECONDS)
     ;
 
     /**

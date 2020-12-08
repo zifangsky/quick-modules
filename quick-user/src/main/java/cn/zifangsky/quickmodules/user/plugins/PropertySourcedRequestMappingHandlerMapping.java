@@ -1,6 +1,6 @@
 package cn.zifangsky.quickmodules.user.plugins;
 
-import cn.zifangsky.quickmodules.user.annotations.PropertySourcedMapping;
+import cn.zifangsky.quickmodules.common.annotations.PropertySourcedMapping;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;

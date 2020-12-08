@@ -1,6 +1,5 @@
 package cn.zifangsky.quickmodules.user.plugins;
 
-import cn.zifangsky.quickmodules.common.utils.EncryptUtils;
 import cn.zifangsky.quickmodules.common.utils.StringUtils;
 import cn.zifangsky.quickmodules.common.utils.VerifyCodeUtils;
 import cn.zifangsky.quickmodules.user.common.Constants;
@@ -20,35 +19,16 @@ import java.io.IOException;
 public class PluginManager {
 
     /**
-     * 用户校验“用户名+密码”模式
+     * “用户名+密码”模式，校验自定义的密码加密方式
      * @author zifangsky
-     * @date 2017/11/5 17:51
+     * @date 2020/1/3 16:15
      * @since 1.0.0
-     * @param tokenCredentials 表单中的密码
-     * @param accountCredentials 表单中的密码
+     * @param correctPassword   数据库中正确的密码
+     * @param validatedPassword 来至外部待验证的密码
      * @return boolean
      */
-    public boolean checkUserPassword(WebUserInfo webUserInfo, String tokenCredentials, String accountCredentials){
-        switch (webUserInfo.getEncryptionType()){
-            case Base64:
-                return accountCredentials.equals(EncryptUtils.base64Encode(tokenCredentials));
-            case Md5Hex:
-                return accountCredentials.equals(EncryptUtils.md5Hex(tokenCredentials));
-            case Sha1Hex:
-                return accountCredentials.equals(EncryptUtils.sha1Hex(tokenCredentials));
-            case Sha256Hex:
-                return accountCredentials.equals(EncryptUtils.sha256Hex(tokenCredentials));
-            case Sha512Hex:
-                return accountCredentials.equals(EncryptUtils.sha512Hex(tokenCredentials));
-            case Md5Crypt:
-                return EncryptUtils.checkMd5Crypt(tokenCredentials, accountCredentials);
-            case Sha256Crypt:
-                return EncryptUtils.checkSha256Crypt(tokenCredentials, accountCredentials);
-            case Sha512Crypt:
-                return EncryptUtils.checkSha512Crypt(tokenCredentials, accountCredentials);
-            default:
-                return false;
-        }
+    public boolean checkCustomUsernamePasswordValidatedInfo(String correctPassword, String validatedPassword, HttpServletRequest request) {
+        return false;
     }
 
     /**

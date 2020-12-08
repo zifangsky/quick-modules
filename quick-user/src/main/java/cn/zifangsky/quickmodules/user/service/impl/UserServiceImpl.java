@@ -1,10 +1,12 @@
 package cn.zifangsky.quickmodules.user.service.impl;
 
+import cn.zifangsky.easylimit.enums.EncryptionTypeEnums;
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
-import cn.zifangsky.quickmodules.common.common.SpringContextUtils;
 import cn.zifangsky.quickmodules.common.utils.BeanUtils;
 import cn.zifangsky.quickmodules.common.utils.EncryptUtils;
 import cn.zifangsky.quickmodules.user.common.Constants;
+import cn.zifangsky.quickmodules.user.common.SpringContextUtils;
 import cn.zifangsky.quickmodules.user.mapper.FunctionMapper;
 import cn.zifangsky.quickmodules.user.mapper.RoleMapper;
 import cn.zifangsky.quickmodules.user.mapper.UserMapper;
@@ -16,7 +18,6 @@ import cn.zifangsky.quickmodules.user.model.bo.SysUserRoleBo;
 import cn.zifangsky.quickmodules.user.plugins.PluginManager;
 import cn.zifangsky.quickmodules.user.plugins.WebUserInfo;
 import cn.zifangsky.quickmodules.user.service.UserService;
-import cn.zifangsky.quickmodules.user.utils.ShiroUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Holder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +53,11 @@ public class UserServiceImpl implements UserService {
     private WebUserInfo webUserInfo;
 
     @Override
+    public EncryptionTypeEnums getEncryptionType() {
+        return webUserInfo.getEncryptionType();
+    }
+
+    @Override
     public SysUser selectByUserId(Long userId) {
         return userMapper.selectByPrimaryKey(userId);
     }
@@ -79,17 +84,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer updateUser(SysUser user) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         return userMapper.updateByPrimaryKey(user);
     }
 
     @Override
     public synchronized Integer addOrUpdateUser(SysUser user, Long roleId) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         //新增记录
         if(user.getId() == null){
             //加密原始密码
@@ -98,7 +97,7 @@ public class UserServiceImpl implements UserService {
             user.setEncryptMode(webUserInfo.getEncryptionType().getCode());
 
             SysUser createUser = (SysUser) SpringContextUtils.getSession().getAttribute(Constants.SESSION_USER);
-            user.setCreater(createUser.getUsername());
+            user.setCreator(createUser.getUsername());
 
             Integer result = userMapper.insertSelective(user);
 
@@ -113,6 +112,11 @@ public class UserServiceImpl implements UserService {
         }
         //修改原纪录
         else{
+            //加密原始密码
+            user.setPassword(this.encodePassword(user.getPassword()));
+            //加密方式
+            user.setEncryptMode(webUserInfo.getEncryptionType().getCode());
+
             //更新用户角色信息
             userMapper.updateUserRole(user.getId(), roleId);
             return userMapper.updateByPrimaryKey(user);
@@ -121,17 +125,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public synchronized Integer deleteUser(Long userId) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         return userMapper.deleteLogically(userId);
     }
 
     @Override
     public boolean register(SysUser user) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         return false;
     }
 
@@ -172,13 +170,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public synchronized Integer addOrUpdateRole(SysRole role, Set<Long> funcIds) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         //新增记录
         if(role.getId() == null){
             SysUser createUser = (SysUser) SpringContextUtils.getSession().getAttribute(Constants.SESSION_USER);
-            role.setCreater(createUser.getUsername());
+            role.setCreator(createUser.getUsername());
 
             Integer result = roleMapper.insertSelective(role);
 
@@ -201,9 +196,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public synchronized Integer deleteRole(Long roleId) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         return roleMapper.delete(roleId);
     }
 
@@ -239,13 +231,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer addOrUpdateFunc(SysFunction func) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         //新增记录
         if(func.getId() == null){
             SysUser createUser = (SysUser) SpringContextUtils.getSession().getAttribute(Constants.SESSION_USER);
-            func.setCreater(createUser.getUsername());
+            func.setCreator(createUser.getUsername());
 
             //查询父节点
             SysFunction parent = functionMapper.selectParentByParentId(func.getParentId());
@@ -288,9 +277,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer deleteFunc(Long funcId) {
-        //清空Shiro缓存
-        ShiroUtils.clearAuthorizationInfo();
-
         return functionMapper.delete(funcId);
     }
 

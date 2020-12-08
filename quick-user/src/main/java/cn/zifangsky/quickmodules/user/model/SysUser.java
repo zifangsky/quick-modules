@@ -1,196 +1,98 @@
 package cn.zifangsky.quickmodules.user.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class SysUser {
+@Data
+public class SysUser{
+    /**
+     * 主键id
+     */
     private Long id;
 
+    /**
+     * 登录名
+     */
     private String username;
 
+    /**
+     * 姓名
+     */
     private String name;
 
+    /**
+     * 密码
+     */
     private String password;
 
+    /**
+     * 密码加密方式
+     */
     private String encryptMode;
 
+    /**
+     * 手机号
+     */
     private String phone;
 
+    /**
+     * 邮箱
+     */
     private String email;
 
+    /**
+     * 0：后台用户；1：前台用户
+     */
     private Integer userType;
 
+    /**
+     * 机构id
+     */
     private Integer institutionId;
 
+    /**
+     * 用户状态（0:可用；1:锁定；2:未开通）
+     */
     private Integer status;
 
+    /**
+     * 删除状态：0正常；1删除
+     */
     private Boolean isDel;
 
     private String loginIp;
 
+    /**
+     * 上次登录时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
 
-    private String creater;
+    /**
+     * 创建人
+     */
+    private String creator;
 
+    /**
+     * 创建时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
-
-    public String getEncryptMode() {
-        return encryptMode;
-    }
-
-    public void setEncryptMode(String encryptMode) {
-        this.encryptMode = encryptMode == null ? null : encryptMode.trim();
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public Integer getUserType() {
-        return userType;
-    }
-
-    public void setUserType(Integer userType) {
-        this.userType = userType;
-    }
-
-    public Integer getInstitutionId() {
-        return institutionId;
-    }
-
-    public void setInstitutionId(Integer institutionId) {
-        this.institutionId = institutionId;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Boolean getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Boolean isDel) {
-        this.isDel = isDel;
-    }
-
-    public String getLoginIp() {
-        return loginIp;
-    }
-
-    public void setLoginIp(String loginIp) {
-        this.loginIp = loginIp == null ? null : loginIp.trim();
-    }
-
-    public Date getLoginTime() {
-        return loginTime;
-    }
-
-    public void setLoginTime(Date loginTime) {
-        this.loginTime = loginTime;
-    }
-
-    public String getCreater() {
-        return creater;
-    }
-
-    public void setCreater(String creater) {
-        this.creater = creater == null ? null : creater.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "SysUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", encryptMode='" + encryptMode + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", userType=" + userType +
-                ", institutionId=" + institutionId +
-                ", status=" + status +
-                ", isDel=" + isDel +
-                ", loginIp='" + loginIp + '\'' +
-                ", loginTime=" + loginTime +
-                ", creater='" + creater + '\'' +
-                ", createTime=" + createTime +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         SysUser sysUser = (SysUser) o;
         return Objects.equals(id, sysUser.id) &&
                 Objects.equals(username, sysUser.username) &&
@@ -205,12 +107,12 @@ public class SysUser {
                 Objects.equals(isDel, sysUser.isDel) &&
                 Objects.equals(loginIp, sysUser.loginIp) &&
                 Objects.equals(loginTime, sysUser.loginTime) &&
-                Objects.equals(creater, sysUser.creater) &&
+                Objects.equals(creator, sysUser.creator) &&
                 Objects.equals(createTime, sysUser.createTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, name, password, encryptMode, phone, email, userType, institutionId, status, isDel, loginIp, loginTime, creater, createTime);
+        return Objects.hash(id, username, name, password, encryptMode, phone, email, userType, institutionId, status, isDel, loginIp, loginTime, creator, createTime);
     }
 }

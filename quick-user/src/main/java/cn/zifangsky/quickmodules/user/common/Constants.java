@@ -49,9 +49,14 @@ public interface Constants {
     String SESSION_VERIFY_CODE = "VERIFY_CODE";
 
     /**
-     * Shiro被踢出的标识
+     * 会话被踢出的标识
      */
     String KICKED_OUT_FLAG = "KICKED_OUT";
+
+    /**
+     * Ajax请求的Header
+     */
+    String AJAX_REQUEST_HEADER = "XMLHttpRequest";
 
     //Table names
     String TABLE_USER = "sys_user";

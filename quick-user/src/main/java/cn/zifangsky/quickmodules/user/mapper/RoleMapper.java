@@ -1,10 +1,10 @@
 package cn.zifangsky.quickmodules.user.mapper;
 
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
 import cn.zifangsky.quickmodules.user.model.SysFunction;
 import cn.zifangsky.quickmodules.user.model.SysRole;
 
-import javax.xml.ws.Holder;
 import java.util.List;
 import java.util.Set;
 

@@ -1,5 +1,7 @@
 package cn.zifangsky.quickmodules.user.service;
 
+import cn.zifangsky.easylimit.enums.EncryptionTypeEnums;
+import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
 import cn.zifangsky.quickmodules.user.model.SysFunction;
 import cn.zifangsky.quickmodules.user.model.SysRole;
@@ -9,7 +11,6 @@ import cn.zifangsky.quickmodules.user.model.bo.SysUserRoleBo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Holder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,16 @@ import java.util.Set;
  * @since 1.0.0
  */
 public interface UserService {
+    /**
+     * 获取“用户名+密码”模式下的密码加密方式
+     *
+     * @return cn.zifangsky.easylimit.enums.EncryptionTypeEnums
+     * @author zifangsky
+     * @date 2020/1/3 17:21
+     * @since 1.0.0
+     */
+    EncryptionTypeEnums getEncryptionType();
+
     /**
      * 通过用户ID查询用户信息
      * @author zifangsky
