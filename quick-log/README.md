@@ -8,11 +8,11 @@
 
 #### （1）引入依赖： ####
 
-```json
+```xml
 <dependency>
 	<groupId>cn.zifangsky.quickmodules</groupId>
 	<artifactId>quick-log</artifactId>
-	<version>${quick-log}</version>
+	<version>1.1.0-RELEASE</version>
 </dependency>
 ```
 
@@ -113,7 +113,7 @@ public class QuickLogModuleConfig {
 
 用于自定义组件的`AbstractLogManager`的逻辑，目前包含以下几个方法：
 
-- getUserInfo：获取用户基本信息。在这个组件中主要是用于在记录用户日志时，获取当前的操作用户。
+- `getUserInfo`：获取用户基本信息。在这个组件中主要是用于在记录用户日志时，获取当前的操作用户。
 
 
 
