@@ -266,7 +266,7 @@ public class QuickUserModuleConfig {
 
 #### （3）globalSessionTimeout： ####
 
-用于设置Shiro的session的有效期，默认的有效期是`2小时`。
+用于设置用户会话的有效期，默认的有效期是`2小时`。
 
 
 
@@ -327,7 +327,7 @@ ii）如果是其他请求方式，则返回提示：
 
 #### （8）aopExpression： ####
 
-此方法用于设置开启`Shiro`的AOP注解需要的表达式，比如：`execution(* cn.zifangsky..controller..*.*(..))`。
+此方法用于设置开启`easylimit`的AOP注解需要的表达式，比如：`execution(* cn.zifangsky..controller..*.*(..))`。
 
 
 
