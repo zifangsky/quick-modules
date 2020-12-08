@@ -2,12 +2,14 @@ package cn.zifangsky.quickmodules.log.controller;
 
 import cn.zifangsky.quickmodules.common.common.Holder;
 import cn.zifangsky.quickmodules.common.common.PageInfo;
+import cn.zifangsky.quickmodules.common.common.resp.BaseResultCode;
+import cn.zifangsky.quickmodules.common.common.resp.Result;
+import cn.zifangsky.quickmodules.common.common.resp.ResultUtils;
 import cn.zifangsky.quickmodules.common.enums.SortOrderTypes;
 import cn.zifangsky.quickmodules.log.model.SysLog;
 import cn.zifangsky.quickmodules.log.service.LogService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +25,12 @@ import java.util.Map;
  * 日志相关查询接口
  *
  * @author zifangsky
- * @date 2017/12/6
- * @since 1.0.0
+ * @date 2020/12/8
+ * @since 1.1.0
  */
+@Slf4j
 @Controller
 public class WebLogController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Resource(name = "logServiceImpl")
     private LogService logService;
@@ -36,15 +38,17 @@ public class WebLogController {
     /**
      * 分页查询
      * @author zifangsky
-     * @date 2017/12/6 09:36
-     * @since 1.0.0
+     * @date 2020/12/8 09:36
+     * @since 1.1.0
      * @param request request
-     * @return java.util.Map<java.lang.String,java.lang.Object>
+     * @return cn.zifangsky.quickmodules.common.common.resp.Result<java.lang.Object>
      */
     @PostMapping(value = "/log/findAll", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public Map<String,Object> findAllUsers(HttpServletRequest request){
-        Map<String,Object> result = new HashMap<>(4);
+    public Result<Object> findAllUsers(HttpServletRequest request){
+        String tid = ResultUtils.nextTid();
+        log.info(String.format("正在请求「/log/findAll」接口，tid=[%s]", tid));
+        Map<String,Object> dataMap = new HashMap<>(4);
 
         //当前页
         String currentPage = request.getParameter("current_page");
@@ -85,19 +89,16 @@ public class WebLogController {
             List<SysLog> list = logService.findAll(roleId, queryParam, pageInfoHolder);
 
             if(list != null){
-                result.put("code", 200);
-                result.put("list", list);
-                result.put("pageInfo", pageInfo);
+                dataMap.put("list", list);
+                dataMap.put("pageInfo", pageInfo);
+                return ResultUtils.success(tid, dataMap);
             }else{
-                result.put("code", 500);
-                result.put("msg","查询出现异常，具体原因请查看日志！");
+                return ResultUtils.error(BaseResultCode.DATA_NO_RESULTS, tid);
             }
         }catch (Exception e){
-            logger.error("根据条件查询日志列表出现异常：", e);
-            result.put("code", 500);
-            result.put("msg","查询出现异常，具体原因请查看日志！");
+            log.error("根据条件查询日志列表出现异常：", e);
+            return ResultUtils.error(tid);
         }
-        return result;
     }
 
 }
