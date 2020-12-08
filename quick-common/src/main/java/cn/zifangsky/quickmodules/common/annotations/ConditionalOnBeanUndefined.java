@@ -3,11 +3,7 @@ package cn.zifangsky.quickmodules.common.annotations;
 import cn.zifangsky.quickmodules.common.condition.BeanUndefinedCondition;
 import org.springframework.context.annotation.Conditional;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 使用注解{@link org.springframework.context.annotation.Bean}生成Bean时，使用该注解检测目标Bean是否已经存在

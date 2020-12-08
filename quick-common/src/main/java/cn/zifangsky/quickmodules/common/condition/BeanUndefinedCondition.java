@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2017/12/5
  * @since 1.0.0
  */
-public class BeanUndefinedCondition implements Condition{
+public class BeanUndefinedCondition implements Condition {
 
 
     @Override

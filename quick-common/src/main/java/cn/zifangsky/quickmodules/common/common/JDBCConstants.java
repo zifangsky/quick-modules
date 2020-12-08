@@ -43,4 +43,19 @@ public interface JDBCConstants extends Constants{
      * 基本的更新SQL
      */
     String BASE_UPDATE = "update {0} set {1} where 1=1";
+
+    /**
+     * 用户表的分页查询条件
+     */
+    String USER_FIND_ALL = "is_del = 0 and (username LIKE ? or name LIKE ? or phone LIKE ? or email LIKE ?)";
+
+    /**
+     * 角色表的分页查询条件
+     */
+    String ROLE_FIND_ALL = "status = 0 and name LIKE ?";
+
+    /**
+     * 资源表的分页查询条件
+     */
+    String FUNC_FIND_ALL = "state = 0 and name LIKE ?";
 }

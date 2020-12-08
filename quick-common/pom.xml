@@ -40,14 +40,8 @@
         <jackson>2.12.0</jackson>
         <!-- SLF4J -->
         <slf4j>1.7.30</slf4j>
-        <!-- Java Servlet API -->
-        <javax.servlet-api>4.0.1</javax.servlet-api>
-        <!-- MySQL Connector -->
-        <mysql>5.1.49</mysql>
-        <!-- Apache Commons DbUtils -->
-        <commons-dbutils>1.7</commons-dbutils>
-        <!-- Spring Web MVC -->
-        <spring>5.2.11.RELEASE</spring>
+        <!-- Spring Boot -->
+        <spring-boot-dependencies>2.3.5.RELEASE</spring-boot-dependencies>
     </properties>
 
     <dependencies>
@@ -118,43 +112,24 @@
             <version>${slf4j}</version>
         </dependency>
 
-        <!-- Java Servlet API -->
+        <!-- Spring Boot -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api}</version>
-            <!--<scope>provided</scope>-->
-        </dependency>
-
-        <!-- MySQL Connector -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql}</version>
-        </dependency>
-        <!-- Apache Commons DbUtils -->
-        <dependency>
-            <groupId>commons-dbutils</groupId>
-            <artifactId>commons-dbutils</artifactId>
-            <version>${commons-dbutils}</version>
-        </dependency>
-        <!-- Spring Web MVC -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${spring}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <finalName>quick-common</finalName>
