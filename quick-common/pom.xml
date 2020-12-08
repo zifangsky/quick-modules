@@ -26,8 +26,6 @@
 
         <!-- Lombok -->
         <lombok>1.18.16</lombok>
-        <!-- JUnit单元测试 -->
-        <junit>4.12</junit>
         <!-- Apache Commons系列公共库 -->
         <commons-lang3>3.11</commons-lang3>
         <commons-io>2.8.0</commons-io>
@@ -51,13 +49,6 @@
             <artifactId>lombok</artifactId>
             <version>${lombok}</version>
             <optional>true</optional>
-        </dependency>
-        <!-- Junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit}</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- Commons -->
@@ -116,6 +107,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
