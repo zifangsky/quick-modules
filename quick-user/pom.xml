@@ -27,7 +27,7 @@
         <!-- Lombok -->
         <lombok>1.18.16</lombok>
         <!-- MySQL Connector -->
-        <mysql>5.1.49</mysql>
+        <mysql>8.0.16</mysql>
         <!-- HikariCP -->
         <HikariCP>3.4.5</HikariCP>
         <!-- Java Servlet API -->
