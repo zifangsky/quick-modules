@@ -18,7 +18,9 @@
 
 #### 使用方式 ####
 
-详细使用文档可以参考各个子模块的`README.md`以及`Wiki`中的接口文档。
+使用示例可以参考：[https://github.com/zifangsky/quick-modules-example](https://github.com/zifangsky/quick-modules-example)
+
+其次，详细使用文档可以参考各个子模块的`README.md`以及`Wiki`中的接口文档。
 
 
 
