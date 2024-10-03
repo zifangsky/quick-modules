@@ -28,7 +28,7 @@
         <lombok>1.18.16</lombok>
         <!-- Apache Commons系列公共库 -->
         <commons-lang3>3.11</commons-lang3>
-        <commons-io>2.8.0</commons-io>
+        <commons-io>2.14.0</commons-io>
         <commons-beanutils>1.9.4</commons-beanutils>
         <commons-codec>1.15</commons-codec>
         <commons-text>1.9</commons-text>
